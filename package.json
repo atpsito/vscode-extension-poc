@@ -11,7 +11,8 @@
   ],
   "activationEvents": [
     "onCommand:extension-poc.start",
-	"onView:extension-poc.start"
+    "onView:extension-poc.sidebar",
+    "onView:extension-poc.start"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -19,17 +20,17 @@
       "activitybar": [
         {
           "id": "extension-poc",
-          "title": "Extension React",
+          "title": "Architect",
           "icon": "$(heart)"
         }
       ]
     },
     "views": {
       "extension-poc": [
-		{
-            "type": "webview",
-            "id": "extension-poc.sidebar",
-            "name": "React Extension"
+        {
+          "type": "webview",
+          "id": "extension-poc.sidebar",
+          "name": "POC"
         }
       ]
     },

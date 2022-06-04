@@ -3,14 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = void 0;
 const path = require("path");
 const vscode = require("vscode");
+const extensionProvider_1 = require("./extensionProvider");
 function activate(context) {
-    var thisProvider = {
-        resolveWebviewView: function (thisWebview, thisWebviewContext, thisToke) {
-            thisWebview.webview.options = { enableScripts: true };
-            thisWebview.webview.html = "<!doctype><html>[etc etc]";
-        },
-    };
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider("extension-poc.sidebar", thisProvider));
+    const provider = new extensionProvider_1.default(context.extensionUri);
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider(extensionProvider_1.default.viewType, provider));
     context.subscriptions.push(vscode.commands.registerCommand("extension-poc.start", () => {
         ReactPanel.createOrShow(context.extensionPath);
     }));
@@ -74,22 +70,6 @@ class ReactPanel {
             }
         }
     }
-    //   private _getHtmlForWebview() {
-    //     const htmlPathOnDisk = vscode.Uri.file(
-    //       path.join(this._extensionPath, "/build/index.html")
-    //     );
-    //     const html = fs.readFileSync(htmlPathOnDisk.path).toString();
-    //     console.log(html);
-    //     return html;
-    //   }
-    // private _getHtmlForWebview() {
-    //   const htmlPathOnDisk = vscode.Uri.file(
-    //     path.join(this._extensionPath, "/build/index.html")
-    //   );
-    //   const html = fs.readFileSync(htmlPathOnDisk.path).toString();
-    //   console.log(html);
-    //   return html;
-    // }
     _getHtmlForWebview() {
         const manifest = require(path.join(this._extensionPath, "build", "asset-manifest.json"));
         const mainScript = manifest["files"]["main.js"];

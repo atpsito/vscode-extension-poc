@@ -1,8 +1,17 @@
 import * as path from "path";
 import * as vscode from "vscode";
-import * as fs from "fs";
+import ExtensionProvider from "./extensionProvider";
 
 export function activate(context: vscode.ExtensionContext) {
+  const provider = new ExtensionProvider(context.extensionUri);
+
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      ExtensionProvider.viewType,
+      provider
+    )
+  );
+
   context.subscriptions.push(
     vscode.commands.registerCommand("extension-poc.start", () => {
       ReactPanel.createOrShow(context.extensionPath);
@@ -100,26 +109,6 @@ class ReactPanel {
       }
     }
   }
-
-  //   private _getHtmlForWebview() {
-  //     const htmlPathOnDisk = vscode.Uri.file(
-  //       path.join(this._extensionPath, "/build/index.html")
-  //     );
-  //     const html = fs.readFileSync(htmlPathOnDisk.path).toString();
-  //     console.log(html);
-
-  //     return html;
-  //   }
-
-  // private _getHtmlForWebview() {
-  //   const htmlPathOnDisk = vscode.Uri.file(
-  //     path.join(this._extensionPath, "/build/index.html")
-  //   );
-  //   const html = fs.readFileSync(htmlPathOnDisk.path).toString();
-  //   console.log(html);
-
-  //   return html;
-  // }
 
   private _getHtmlForWebview() {
     const manifest = require(path.join(
